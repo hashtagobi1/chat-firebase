@@ -1,3 +1,4 @@
+import Chat from "./components/Chat";
 import Navbar from "./components/Navbar";
 
 export default function Home() {
@@ -9,7 +10,7 @@ export default function Home() {
     >
       <section className={"  text-center"}>
         <Navbar />
-        {/* Chat Component */}
+        <Chat />
       </section>
     </main>
   );
