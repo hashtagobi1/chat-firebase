@@ -1,29 +1,38 @@
-import { useAuth, useUser } from "@clerk/nextjs";
-import React from "react";
+import { convertTimestamp } from "@/utils/convertTimestamp";
+import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 import { MessageType } from "./Chat";
-import moment from "moment";
 type Props = {
   message: MessageType;
 };
 
 const Message = ({ message }: Props) => {
-  const {timestamp} = message;
-
-  if(!timestamp) return null; 
-  const { seconds, nanoseconds } = timestamp
-
-  const milliseconds = seconds * 1000 + nanoseconds / 1000000; // Convert to milliseconds
-  const date = moment(milliseconds);
-  const formattedDate = date.format("MMM Do 'YY, hh:mma"); // Format the date
-
-  console.log({ date });
-
-  console.log({ message });
   const user = useUser();
   const messageClass = message.userID == user?.user?.id;
-  console.log({ user });
   return (
     <div className="">
+      <div
+        className={`
+                ${
+                  messageClass
+                    ? "  flex-row-reverse text-end float-right rounded-bl-full"
+                    : "  float-left rounded-br-full"
+                } mt-5`}
+      >
+        {user.user?.imageUrl ? (
+          <Image
+            src={user?.user?.imageUrl || ""}
+            width={30}
+            height={30}
+            className="object-cover rounded-full"
+            alt={`Display picture for: ${user?.user?.fullName}`}
+          />
+        ) : (
+          <span className="rounded-full py-2 px-3 uppercase bg-white text-black">
+            {user.user?.fullName?.slice(0, 1)}
+          </span>
+        )}
+      </div>
       <div
         className={`
       ${
@@ -36,9 +45,11 @@ const Message = ({ message }: Props) => {
       >
         <p className="absolute italics -mt-16 opacity-40 text-gray-600 text-xs">
           Sent by: {message.name?.split(" ")[0]} on{" "}
-          <span className="text-black">{formattedDate}</span>
+          <span className="text-black">
+            {convertTimestamp(message.timestamp)}
+          </span>
         </p>
-        <p className=" text-md">{message.text}</p>
+        <p className="text-md">{message.text}</p>
       </div>
     </div>
   );

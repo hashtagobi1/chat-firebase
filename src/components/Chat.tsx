@@ -1,11 +1,11 @@
 "use client";
 import { db } from "@/db/firebase";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useUser } from "@clerk/nextjs";
+import { Timestamp, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer";
 import React, { useEffect } from "react";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
-import { useUser } from "@clerk/nextjs";
 
 type Props = {};
 
@@ -13,10 +13,7 @@ export type MessageType = {
   text: string;
   name?: string | null;
   userID?: string;
-  timestamp: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  timestamp: Timestamp
   sessionID?: string | null;
   messageID?: string;
 };
@@ -45,6 +42,7 @@ const Chat = (props: Props) => {
         {messages.length > 0 && user?.id ? (
           messages.map((message) => (
             <motion.div
+              key={message.messageID}
               initial={{ opacity: 0, y: -100, scale: 1 }}
               animate={{
                 opacity: 1,
