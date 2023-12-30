@@ -9,14 +9,11 @@ const Navbar = (props: Props) => {
   const auth = useAuth();
   const user = useUser();
   return (
-    <div className="bg-gray-300 text-xl h-20 flex justify-between w-full items-center p-20 py-4">
-      <div className="flex flex-col gap-3">
+    <div className="bg-gray-300 flex-col md:flex-row md:text-xl  flex justify-between w-full items-center p-20 py-4">
+      <div className="flex md:flex-col gap-3">
         <div className="flex gap-4 items-center">
-          <span>
-            <Image src="/logo.png" width={30} height={30} alt="logo" />
-          </span>
-          <h1 className="  text-transparent bg-clip-text bg-gradient-to-r from-[##FE4567] to bg-black">
-            Hey.XYZ Chat Demo
+          <h1 className="bg-gradient-to-r from-blue-500 to-gray-700 text-transparent bg-clip-text">
+            Chat Demo
           </h1>
         </div>
         <Link
@@ -40,7 +37,7 @@ const Navbar = (props: Props) => {
         </Link>
       </div>
       {user.isSignedIn && (
-        <div className="flex items-center gap-8">
+        <div className="flex items-center justify-between gap-8">
           <h2 className="">Welcome {user.user.firstName}</h2>
           {user.user.imageUrl && (
             <Image
@@ -53,7 +50,7 @@ const Navbar = (props: Props) => {
           )}
         </div>
       )}
-      <div className="bg-white rounded-md p-3 text-xl">
+      <div className="bg-white rounded-md mt-8 p-3 md:text-xl">
         {user.isSignedIn ? <SignOutButton /> : <SignInButton />}
       </div>
     </div>
