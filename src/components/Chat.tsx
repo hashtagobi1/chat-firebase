@@ -1,18 +1,15 @@
 "use client";
-import React, { useEffect } from "react";
-import { useQuery } from "react-query";
-import {
-  query,
-  collection,
-  orderBy,
-  onSnapshot,
-  addDoc,
-  FieldValue,
-} from "firebase/firestore";
 import { db } from "@/db/firebase";
-import SendMessage from "./SendMessage";
-import Message from "./Message";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query
+} from "firebase/firestore";
 import { AnimatePresence, motion } from "framer";
+import React, { useEffect } from "react";
+import Message from "./Message";
+import SendMessage from "./SendMessage";
 
 type Props = {};
 

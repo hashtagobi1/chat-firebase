@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const dotenv = require('dotenv')
 const nextConfig = {
     compiler: {
         removeConsole: true
