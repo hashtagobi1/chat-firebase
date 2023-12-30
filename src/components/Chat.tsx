@@ -42,7 +42,7 @@ const Chat = (props: Props) => {
   return (
     <>
       <div className="flex flex-col py-8 px-4 relative">
-        {messages.length > 0 ? (
+        {messages.length > 0 && user?.id ? (
           messages.map((message) => (
             <motion.div
               initial={{ opacity: 0, y: -100, scale: 1 }}
