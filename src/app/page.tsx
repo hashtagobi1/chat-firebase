@@ -1,7 +1,10 @@
-import Chat from "./components/Chat";
-import Navbar from "./components/Navbar";
+"use client";
+import Chat from "@/components/Chat";
+import Navbar from "@/components/Navbar";
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
+  const user = useUser();
   return (
     <main
       className={
@@ -10,7 +13,7 @@ export default function Home() {
     >
       <section className={"  text-center"}>
         <Navbar />
-        <Chat />
+        {user ? <Chat /> : null}
       </section>
     </main>
   );

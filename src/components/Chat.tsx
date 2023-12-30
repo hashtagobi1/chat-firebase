@@ -2,17 +2,30 @@
 import React, { useEffect } from "react";
 import Message from "./Message";
 import { useQuery } from "react-query";
-import { query, collection, orderBy, onSnapshot } from "firebase/firestore";
-import { db } from "../../db/firebase";
-import { set } from "firebase/database";
+import {
+  query,
+  collection,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  FieldValue,
+} from "firebase/firestore";
+import { db } from "@/db/firebase";
+import SendMessage from "./SendMessage";
 
 type Props = {};
-const getMessages = async () => {};
+
+type Messages = {
+  text: string;
+  name?: string | null;
+  userID?: string;
+  timestamp: FieldValue;
+  sessionID?: string | null;
+  messageID: string;
+};
 
 const Chat = (props: Props) => {
-  const [messages, setMessages] = React.useState([]);
-  const {} = useQuery("messages", () => {});
-
+  const [messages, setMessages] = React.useState<Messages[]>([]);
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -28,15 +41,15 @@ const Chat = (props: Props) => {
     });
   }, []);
   const scroll = React.useRef<HTMLSpanElement>(null);
-  console.log({ messages });
   return (
     <>
       <div className="flex flex-col p-2 relative">
         {messages &&
           messages.map((message) => (
-            <Message key={message.id} message={message} />
+            <Message key={message.messageID} message={message} />
           ))}
       </div>
+      <SendMessage scroll={scroll} />
       <span ref={scroll}></span>
     </>
   );

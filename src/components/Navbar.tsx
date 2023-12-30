@@ -15,17 +15,22 @@ const Navbar = (props: Props) => {
   const auth = useAuth();
   const user = useUser();
   return (
-    <div className="bg-gray-400 h-20 flex justify-between w-full items-center p-4">
-      <h1 className=" text-3xl">Chat App</h1>
+    <div className="bg-gray-300 h-20 flex justify-between w-full items-center p-4">
+      <h1 className=" text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[##FE4567] to bg-black">
+        Hey.XYZ App Demo
+      </h1>
       {user.isSignedIn && (
         <div className="flex items-center gap-8">
           <h2 className="text-2xl">Welcome {user.user.firstName}</h2>
-          <Image
-            alt={`Profile Image for ${user.user.firstName}`}
-            src={user.user.imageUrl}
-            width={80}
-            height={80}
-          />
+          {user.user.imageUrl && (
+            <Image
+              alt={`Profile Image for ${user.user.firstName}`}
+              src={user.user.imageUrl}
+              width={45}
+              className="rounded-lg"
+              height={45}
+            />
+          )}
         </div>
       )}
       {user.isSignedIn ? <SignOutButton /> : <SignInButton />}
