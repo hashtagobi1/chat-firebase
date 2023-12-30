@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <main
       className={
-        "flex flex-col h-[90vh] bg-gray-100 mt-10 shadow-xl border relative"
+        "flex flex-col  bg-gray-100 mt-10 border relative"
       }
     >
       <section className={"  text-center"}>

@@ -1,11 +1,23 @@
 import { useAuth, useUser } from "@clerk/nextjs";
 import React from "react";
-
+import { MessageType } from "./Chat";
+import moment from "moment";
 type Props = {
-  message: any;
+  message: MessageType;
 };
 
 const Message = ({ message }: Props) => {
+  const {timestamp} = message;
+
+  if(!timestamp) return null; 
+  const { seconds, nanoseconds } = timestamp
+
+  const milliseconds = seconds * 1000 + nanoseconds / 1000000; // Convert to milliseconds
+  const date = moment(milliseconds);
+  const formattedDate = date.format("MMM Do 'YY, hh:mma"); // Format the date
+
+  console.log({ date });
+
   console.log({ message });
   const user = useUser();
   const messageClass = message.userID == user?.user?.id;
@@ -23,7 +35,8 @@ const Message = ({ message }: Props) => {
       flex items-center shadow-lg m-4 py-2 px-3 rounded-tl-full rounded-tr-full`}
       >
         <p className="absolute italics -mt-16 opacity-40 text-gray-600 text-xs">
-          Sent by: {message.name}
+          Sent by: {message.name?.split(" ")[0]} on{" "}
+          <span className="text-black">{formattedDate}</span>
         </p>
         <p className=" text-md">{message.text}</p>
       </div>
