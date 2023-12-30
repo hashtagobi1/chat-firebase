@@ -1,10 +1,5 @@
 "use client";
-import {
-  SignInButton,
-  SignOutButton,
-  useAuth,
-  useUser
-} from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,7 +9,7 @@ const Navbar = (props: Props) => {
   const auth = useAuth();
   const user = useUser();
   return (
-    <div className="bg-gray-300 text-xl h-20 flex justify-between w-full items-center p-4">
+    <div className="bg-gray-300 text-xl h-20 flex justify-between w-full items-center p-20 py-4">
       <div className="flex flex-col gap-3">
         <div className="flex gap-4 items-center">
           <span>
@@ -58,13 +53,9 @@ const Navbar = (props: Props) => {
           )}
         </div>
       )}
-      {user.isSignedIn ? (
-        <div className="bg-white rounded-md p-3 text-sm">
-          <SignOutButton />
-        </div>
-      ) : (
-        <SignInButton />
-      )}
+      <div className="bg-white rounded-md p-3 text-xl">
+        {user.isSignedIn ? <SignOutButton /> : <SignInButton />}
+      </div>
     </div>
   );
 };

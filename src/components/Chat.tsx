@@ -1,15 +1,11 @@
 "use client";
 import { db } from "@/db/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer";
 import React, { useEffect } from "react";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
+import { useUser } from "@clerk/nextjs";
 
 type Props = {};
 
@@ -27,6 +23,7 @@ export type MessageType = {
 
 const Chat = (props: Props) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
+  const { user } = useUser();
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -73,7 +70,13 @@ const Chat = (props: Props) => {
           </AnimatePresence>
         )}
       </div>
-      <SendMessage scroll={scroll} />
+      {user ? (
+        <SendMessage scroll={scroll} />
+      ) : (
+        <p className="opacity-80 text-gray-700">
+          Please sign in to send a message
+        </p>
+      )}
       <span ref={scroll}></span>
     </>
   );

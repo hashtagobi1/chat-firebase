@@ -1,12 +1,10 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
 import { db } from "@/db/firebase";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
-import React, { useEffect } from "react";
-import { Input } from "postcss";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { render } from "react-dom";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   scroll: React.RefObject<HTMLSpanElement>;
@@ -16,6 +14,8 @@ type Inputs = {
   messageInput: string;
 };
 const SendMessage = ({ scroll }: Props) => {
+  const { user } = useUser();
+  const auth = useAuth();
   const [input, setInput] = React.useState("");
   const {
     register,
@@ -28,6 +28,7 @@ const SendMessage = ({ scroll }: Props) => {
     if (data.messageInput === "") {
       toast.error("Message field cannot be blank.");
     }
+
     await addDoc(collection(db, "messages"), {
       text: input,
       name: user?.fullName,
@@ -36,9 +37,9 @@ const SendMessage = ({ scroll }: Props) => {
       sessionID: auth.sessionId,
       messageID: uuidv4(),
     })
-    .then((docRef) => {
-        const thing =docRef.converter?.toFirestore(docRef)
-        console.log({thing})
+      .then((docRef) => {
+        const thing = docRef.converter?.toFirestore(docRef);
+        console.log({ thing });
         toast.success("Message sent!");
         setInput("");
       })
@@ -50,10 +51,6 @@ const SendMessage = ({ scroll }: Props) => {
       behavior: "smooth",
     });
   };
-
-  const auth = useAuth();
-  const { user } = useUser();
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
